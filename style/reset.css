@@ -1,0 +1,37 @@
+.uni-swiper-wrapper {
+	border-radius: 16rpx;
+}
+
+.u-size-default {
+	margin-right: 8rpx;
+}
+
+.detail-tag .u-size-default:last-child {
+	margin-right: 0 !important;
+}
+
+.detail-box .u-slot-content {
+	justify-content: flex-end;
+	padding: 0 26rpx 0 0;
+}
+
+.shelf-box .u-checkbox {
+	position: relative;
+}
+
+.shelf-box .u-checkbox__icon-wrap {
+	position: absolute;
+	top: 10rpx;
+	left: 20rpx;
+	z-index: 10;
+	background: white;
+}
+
+.shelf-box .u-checkbox__label {
+	margin: 0 10rpx;
+	line-height: normal;
+}
+
+.u-avatar span {
+	font-size: 60rpx;
+}

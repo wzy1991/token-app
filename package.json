@@ -1,0 +1,23 @@
+{
+  "name": "sanye-uni-app",
+  "version": "1.0.0",
+  "description": "三叶阅读\r uni-app + uView-ui",
+  "main": "main.js",
+  "dependencies": {
+    "async-validator": "^4.2.5",
+    "dayjs": "^1.11.5",
+    "flyio": "^0.6.14",
+    "js-md5": "^0.7.3",
+    "lodash": "^4.17.19",
+    "luch-request": "^3.0.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/YetFever/sanye-uni-app.git"
+  },
+  "author": "Yet",
+  "license": "ISC"
+}

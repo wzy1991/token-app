@@ -43,7 +43,8 @@ export default {
 				return validatorDefaultCatch(e);
 			}
 			uni.request({
-				url:'http://192.168.100.59:9005/pay/webapppay',
+				// url:'http://192.168.100.59:9005/pay/webapppay',
+				url:'http://127.0.0.1:8088/test/pay/webapppay',
 				method:'POST',
 				data:{
 					qrData: qr_data

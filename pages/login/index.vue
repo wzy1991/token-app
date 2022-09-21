@@ -94,7 +94,8 @@ export default {
 			}
 			uni.request({
 				// url:'http://192.168.100.45:9000/openplat/webapi/cent/login',
-				url:'http://127.0.0.1:8099/loan-test/app/login',
+				// url:'http://127.0.0.1:8099/loan-test/app/login',
+				 url:'http://127.0.0.1:8088/test/login',
 				method:'POST',
 				data:{
 					email: account,

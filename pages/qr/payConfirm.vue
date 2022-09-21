@@ -5,17 +5,18 @@
 			<form @submit.prevent="submit" class="cl">
 				<view class="t-a">
 					<image src="@/static/login/sj.png" mode="aspectFit"></image>
-					<input type="text" placeholder="payOrderId" v-model="payOrderId" required />
+					<input type="text" placeholder="订单号" v-model="payOrderId" required />
 				</view>
 				<view class="t-a">
 					<image src="@/static/login/sj.png" mode="aspectFit"></image>
 					<input type="text" placeholder="email" v-model="email" required />
+					<button class="logon" @click="sendEmailCode">获取验证码</button>
 				</view>
 				<view class="t-a">
 					<image src="@/static/login/sj.png" mode="aspectFit"></image>
 					<input type="text" placeholder="vercode" v-model="vercode" required />
 				</view>
-				<button class="logon" @click="submit" :hidden="current === 1">提交支付信息</button>
+				<button class="logon" @click="submit">提交支付信息</button>
 			</form>
 		</view>
 		
@@ -33,10 +34,40 @@ export default {
 		return {
 			vercode: '',
 			email: '',
-			payOrderId: ''
+			payOrderId: this.$route.params.payOrderId
 		};
-	}/* ,
+	} ,
 	methods: {
+		async sendEmailCode(){
+			try {
+				await this.$validator({
+					email: [required(required.message('email')), attrs.range([5, 64], attrs.range.message('email'))],
+				}).validate({
+					email
+				});
+			} catch (e) {
+				return validatorDefaultCatch(e);
+			}
+			uni.request({
+				//发送邮件
+				url:'http://192.168.100.59:9005/pay/webapppay',
+				method:'POST',
+				header:{
+					"content-type":"application/x-www-form-urlencoded"
+				}
+				data:{
+					email: data.email,
+					payOrderId:data.payOrderId
+				},
+				success:(res)=>{
+					console.log(res.data);
+					
+				},
+				fail:(res)=>{
+					console.log("登录失败");
+				}
+			});
+		}
 		async submit() {
 			console.log('submit');
 			const { qr_data} = this;
@@ -67,7 +98,7 @@ export default {
 			});
 			
 		}
-	} */
+	} 
 };
 </script>
 <style lang="less" scoped>

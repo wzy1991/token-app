@@ -27,18 +27,26 @@ import attrs, { required } from '@/utils/validate';
 import { validatorDefaultCatch } from '@/utils/dialog';
 import { useAttrs } from "vue";
 import dayjs from 'dayjs';
+import { Base64 } from 'js-base64';
 
 export default {
-	name: 'Login',
 	data: function() {
 		return {
 			vercode: '',
-			email: '',
-			payOrderId: this.$route.params.payOrderId
+			email: 'wuhb@yufu99.com',
+			payOrderId: this.$route.params.pa.payOrderId,
+			payMode: this.$route.params.pa.payMode,
+			merNo: this.$route.params.pa.merNo,
+			merOrderNo: this.$route.params.pa.merOrderNo,
+			txnTitle: this.$route.params.pa.txnTitle,
+			txnDetail: this.$route.params.pa.txnDetail,
+			amount: this.$route.params.pa.payTokenAmount,
+			custAddr: '0xb15ee264b589177a3630721e81fe01d22c484ada'
 		};
 	} ,
 	methods: {
 		async sendEmailCode(){
+			const { email,payOrderId} = this;
 			try {
 				await this.$validator({
 					email: [required(required.message('email')), attrs.range([5, 64], attrs.range.message('email'))],
@@ -50,14 +58,14 @@ export default {
 			}
 			uni.request({
 				//发送邮件
-				url:'http://192.168.100.59:9005/pay/webapppay',
+				url:'http://192.168.100.59:9005/pay/sendVerCode',
 				method:'POST',
 				header:{
 					"content-type":"application/x-www-form-urlencoded"
-				}
+				},
 				data:{
-					email: data.email,
-					payOrderId:data.payOrderId
+					email: email,
+					payOrderId:payOrderId
 				},
 				success:(res)=>{
 					console.log(res.data);
@@ -67,24 +75,22 @@ export default {
 					console.log("登录失败");
 				}
 			});
-		}
+		},
 		async submit() {
+			const { custAddr,payMode,merNo,merOrderNo,txnTitle,txnDetail,amount,payOrderId,vercode,email} = this;
 			console.log('submit');
-			const { qr_data} = this;
-			try {
-				await this.$validator({
-					qr_data: [required(required.message('qr_data')), attrs.range([5, 128], attrs.range.message('qr_data'))],
-				}).validate({
-					qr_data
-				});
-			} catch (e) {
-				return validatorDefaultCatch(e);
-			}
+			let msg = custAddr+payMode+merNo+merOrderNo+Base64.encode(txnTitle) +Base64.encode(txnDetail) +amount;
 			uni.request({
-				url:'http://192.168.100.59:9005/pay/webapppay',
+				url:'http://192.168.100.59:9005/pay/centconfirm',
 				method:'POST',
+				header:{
+					"content-type":"application/x-www-form-urlencoded"
+				},
 				data:{
-					qrData: qr_data
+					email: email,
+					payOrderId:payOrderId,
+					vercode:vercode,
+					signMsg: msg
 				},
 				success:(res)=>{
 					console.log(res.data);

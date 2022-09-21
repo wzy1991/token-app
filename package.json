@@ -7,6 +7,7 @@
     "async-validator": "^4.2.5",
     "dayjs": "^1.11.5",
     "flyio": "^0.6.14",
+    "js-base64": "^2.6.4",
     "js-md5": "^0.7.3",
     "lodash": "^4.17.19",
     "luch-request": "^3.0.4"

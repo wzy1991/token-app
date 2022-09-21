@@ -7,7 +7,7 @@
 					<image src="@/static/login/sj.png" mode="aspectFit"></image>
 					<input type="text" placeholder="输入QrData" v-model="qr_data" required />
 				</view>
-				<button class="logon" @click="submit" :hidden="current === 1">提交支付信息</button>
+				<button class="logon" @click="submit">提交支付信息</button>
 			</form>
 		</view>
 		
@@ -43,8 +43,8 @@ export default {
 				return validatorDefaultCatch(e);
 			}
 			uni.request({
-				// url:'http://192.168.100.59:9005/pay/webapppay',
-				url:'http://127.0.0.1:8088/test/pay/webapppay',
+				url:'http://192.168.100.59:9005/pay/webapppay',
+				// url:'http://127.0.0.1:8088/test/pay/webapppay',
 				method:'POST',
 			
 				data:{
@@ -57,7 +57,7 @@ export default {
 					console.log(res.data);
 					if(res.data.result_code=='0'){
 						// this.$router.replace({name:'/pages/qr/payConfirm',params:{payOrderId:res.data.data.payOrderId}});
-						this.$router.replace({path: '/pages/qr/payConfirm',params:{payOrderId:res.data.data.payOrderId}})
+						this.$router.replace({path: '/pages/qr/payConfirm',params:{pa:res.data.data}})
 					}else{
 						this.$router.replace({
 						path: '/pages/home/index'

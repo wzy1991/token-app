@@ -20,7 +20,7 @@
 							和
 							<text class="clickClass" @click="handleGoPrivacy">《隐私政策》</text> -->
 						</view>
-						<button class="logon" @click="submit" :hidden="current === 1">登录</button>
+						<button class="logon" @click="submit">登录</button>
 					</form>
 				</view>
 			
@@ -93,9 +93,9 @@ export default {
 				return validatorDefaultCatch(e);
 			}
 			uni.request({
-				// url:'http://192.168.100.45:9000/openplat/webapi/cent/login',
+				url:'http://192.168.100.45:9000/openplat/webapi/cent/login',
 				// url:'http://127.0.0.1:8099/loan-test/app/login',
-				 url:'http://127.0.0.1:8088/test/login',
+				 // url:'http://127.0.0.1:8088/test/login',
 				method:'POST',
 				data:{
 					email: account,

@@ -18,14 +18,6 @@
             }
         }
         ,{
-            "path" : "pages/home/index2",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        },{
 			"path": "pages/qr/index",
 			"style": {
 				"navigationBarTitleText": "",

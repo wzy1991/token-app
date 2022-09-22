@@ -1,102 +1,67 @@
 <template>
-	<view style="height: 100%;width: 100%;background-color: #FFFFFF;">
+<view style="height: 100%;width: 100%;background-color: #FFFFFF;">
 		<view class="t-login">
-			
-			<form @submit.prevent="submit" class="cl">
-				<view class="t-a">
-					<image src="@/static/login/sj.png" mode="aspectFit"></image>
-					<input type="text" placeholder="订单号" v-model="payOrderId" required />
-				</view>
-				<view class="t-a">
-					<image src="@/static/login/sj.png" mode="aspectFit"></image>
-					<input type="text" placeholder="email" v-model="email" required />
-					<button class="logon" @click="sendEmailCode">获取验证码</button>
-				</view>
-				<view class="t-a">
-					<image src="@/static/login/sj.png" mode="aspectFit"></image>
-					<input type="text" placeholder="vercode" v-model="vercode" required />
-				</view>
-				<button class="logon" @click="submit">提交支付信息</button>
-			</form>
-		</view>
-		
+		<form @submit.prevent="submit" class="cl">
+			<view class="t-a">
+				<image src="@/static/login/sj.png" mode="aspectFit"></image>
+				<input type="text" placeholder="输入支付金额" v-model="amount" required />
+			</view>
+			<button class="logon" @click="submit">支付</button>
+		</form>
+	</view>
 	</view>
 </template>
+
 <script>
 import attrs, { required } from '@/utils/validate';
 import { validatorDefaultCatch } from '@/utils/dialog';
 import { useAttrs } from "vue";
 import dayjs from 'dayjs';
-import { Base64 } from 'js-base64';
-
-export default {
-	data() {
-		return {
-			vercode: '',
-			email: 'wuhb@yufu99.com',
-			payOrderId: this.$route.params.pa.payOrderId,
-			payMode: this.$route.params.pa.payMode,
-			merNo: this.$route.params.pa.merNo,
-			merOrderNo: this.$route.params.pa.merOrderNo,
-			txnTitle: this.$route.params.pa.txnTitle,
-			txnDetail: this.$route.params.pa.txnDetail,
-			amount: this.$route.params.pa.payTokenAmount,
-			custAddr: '0xb15ee264b589177a3630721e81fe01d22c484ada'
-		};
-	} ,
-	methods: {
-		async sendEmailCode(){
-			const { email,payOrderId} = this;
+	export default {
+		data() {
+			return {
+				merNo:'1',
+				merNm:'淘宝',
+				orgNo:'1',
+				amount:''
+			}
+		},
+		methods: {
+		async submit() {
+			console.log('submit');
+			const { amount} = this;
 			try {
 				await this.$validator({
-					email: [required(required.message('email')), attrs.range([5, 64], attrs.range.message('email'))],
+					amount: [required(required.message('amount')), attrs.range([1, 12], attrs.range.message('amount'))],
 				}).validate({
-					email
+					amount
 				});
 			} catch (e) {
 				return validatorDefaultCatch(e);
 			}
 			uni.request({
-				//发送邮件
-				url:'http://192.168.100.59:9005/pay/sendVerCode',
+				url:'http://192.168.100.59:9005/offLinePay/userScanPay',
 				method:'POST',
-				header:{
-					"content-type":"application/x-www-form-urlencoded"
-				},
+			
 				data:{
-					email: email,
-					payOrderId:payOrderId
+					merNo:this.merNo,
+					merNm:this.merNm,
+					orgNo:this.orgNo,
+					amount: this.amount
+				},
+				header: {
+					'content-type': 'application/x-www-form-urlencoded' //自定义请求头信息
 				},
 				success:(res)=>{
 					console.log(res.data);
-					
-				},
-				fail:(res)=>{
-					console.log("登录失败");
-				}
-			});
-		},
-		async submit() {
-			const { custAddr,payMode,merNo,merOrderNo,txnTitle,txnDetail,amount,payOrderId,vercode,email} = this;
-			console.log('submit');
-			let msg = custAddr+payMode+merNo+merOrderNo+Base64.encode(txnTitle) +Base64.encode(txnDetail) +amount;
-			uni.request({
-				url:'http://192.168.100.59:9005/pay/centconfirm',
-				method:'POST',
-				header:{
-					"content-type":"application/x-www-form-urlencoded"
-				},
-				data:{
-					email: email,
-					payOrderId:payOrderId,
-					vercode:vercode,
-					signMsg: msg
-				},
-				success:(res)=>{
-					console.log(res.data);
-					this.$router.replace({
+					if(res.data.result_code=='0'){
+						this.$router.replace({path: '/pages/qr/payConfirm',params:{pa:res.data.data}})
+					}else{
+						this.$router.replace({
 						path: '/pages/home/index'
 					});
+					}
+					
 				},
 				fail:(res)=>{
 					console.log("登录失败");
@@ -104,10 +69,11 @@ export default {
 			});
 			
 		}
-	} 
-};
+	}
+	}
 </script>
-<style lang="less" scoped>
+
+<style>
 .tip {
 	font-size: 24rpx;
 	margin: 40rpx auto;

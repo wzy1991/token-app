@@ -11,6 +11,9 @@
 					<u-cell-item title="展示二维码" @click="handleToPage('/pages/qr/show')">
 						<view slot="icon" style="margin-right: 10rpx;"><u-image width="50rpx" height="50rpx" :src="'/static/icon/qr.png'"></u-image></view>
 					</u-cell-item>
+					<u-cell-item title="二维码主扫" @click="handleToPage('/pages/qr/scanToPay')">
+						<view slot="icon" style="margin-right: 10rpx;"><u-image width="50rpx" height="50rpx" :src="'/static/icon/scan.png'"></u-image></view>
+					</u-cell-item>
 				</u-cell-group>
 			</view>
 		</view>

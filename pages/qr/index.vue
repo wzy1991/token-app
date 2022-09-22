@@ -20,7 +20,6 @@ import { useAttrs } from "vue";
 import dayjs from 'dayjs';
 // import { handleGetUserInfo } from '@/utils';
 
-const BACK_URL = 'login_back_url';
 
 export default {
 	name: 'Login',
